@@ -5,9 +5,9 @@
 	  p--; break; }}}
 
 int main(){
-	int * p = {1,2,3};
-	if (*p != 0)
-	  SKIP_SPACES (p, lim);
+	int * a = {1,2,3};
+	if (*a != 0)
+	  SKIP_SPACES (a, aaa1);
 	else
 		printf("it works!\n");
 	return 0;

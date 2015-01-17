@@ -1837,6 +1837,9 @@ public class Preprocessor implements Closeable {
 
                 case IDENTIFIER:
                     Macro m = getMacro(tok.getText());
+                    int mflag = 1;
+                    if (mflag > 0)
+                    	return tok;
                     if (m == null)
                         return tok;
                     if (source.isExpanding(m))

@@ -16,6 +16,11 @@
  */
 package org.anarres.cpp;
 
+//import antlr.collections.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * A Preprocessor token.
  *
@@ -29,6 +34,8 @@ public final class Token {
     private int column;
     private final Object value;
     private final String text;
+    private String macroName;
+    private List<Argument> args;
 
     public Token(int type, int line, int column,
             String text, Object value) {
@@ -37,6 +44,19 @@ public final class Token {
         this.column = column;
         this.text = text;
         this.value = value;
+        this.macroName = null;
+        this.args = null;
+    }
+    
+    public Token(int type, int line, int column,
+            String text, Object value, String m, List<Argument> as) {
+    	 this.type = type;
+         this.line = line;
+         this.column = column;
+         this.text = text;
+         this.value = value;
+         this.macroName = m;
+         this.args = as;
     }
 
     public Token(int type, int line, int column, String text) {
@@ -190,4 +210,13 @@ public final class Token {
 
     /** The position-less space token. */
     /* pp */ static final Token space = new Token(WHITESPACE, -1, -1, " ");
+    
+    public void setMacroName(String m) {
+    	this.macroName = m;
+    }
+    
+    public void setArgs(List<Argument> args) {
+    	this.args = args;
+    }
+    
 }

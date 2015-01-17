@@ -32,12 +32,21 @@ import static org.anarres.cpp.Token.*;
     private final List<Argument> args;	/* { unexpanded, expanded } */
 
     private Iterator<Token> arg;	/* "current expansion" */
+    private List<Token> ts; 
 
     /* pp */ MacroTokenSource(Macro m, List<Argument> args) {
         this.macro = m;
         this.tokens = m.getTokens().iterator();
         this.args = args;
         this.arg = null;
+        this.ts = m.getTokens();
+        
+        Iterator<Token> itr = this.ts.iterator();
+        for (; itr.hasNext();) {
+			Token t = itr.next();
+			t.setMacroName(m.getName());
+			t.setArgs(args);
+		}
     }
 
     @Override

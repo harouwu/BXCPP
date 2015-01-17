@@ -168,7 +168,7 @@ public class Main {
                 LOG.info("  " + dir);
             LOG.info("End of search list.");
         }
-        
+        /*
         try {
         	int count = 0;
             for (;;) {
@@ -178,10 +178,10 @@ public class Main {
                     break;
                 if (tok.getType() == Token.EOF)
                     break;
-                System.out.print(tok.getText());
+                //System.out.print(tok.getText());
             }
-            System.out.println();
-            System.out.println("Token number: " + count);
+            //System.out.println();
+            //System.out.println("Token number: " + count);
         } catch (Exception e) {
             StringBuilder buf = new StringBuilder("Preprocessor failed:\n");
             Source s = pp.getSource();
@@ -191,6 +191,9 @@ public class Main {
             }
             LOG.error(buf.toString(), e);
         }
+        */
+        MyPreprocessor mpp = new MyPreprocessor(pp);
+        //mpp.Print();
 
     }
 
