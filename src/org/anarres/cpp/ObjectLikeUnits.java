@@ -26,4 +26,8 @@ public class ObjectLikeUnits extends Unit {
 	public void PrintForward(){
 		this.expanded.PrintForward();
 	}
+	
+	public List<Token> getExpandedTokens() {
+		return this.expanded.getExpandedTokens();
+	}
 }

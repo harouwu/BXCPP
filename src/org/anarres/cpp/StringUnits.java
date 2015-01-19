@@ -43,5 +43,8 @@ public class StringUnits extends Unit {
 		this.PrintForward();
 	}
 	
+	public List<Token> getExpandedTokens() {
+		return this.expanded.getExpandedTokens();
+	}
 	
 }

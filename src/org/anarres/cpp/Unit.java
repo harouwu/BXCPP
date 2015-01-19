@@ -7,6 +7,7 @@ import java.util.Map;
 
 
 public class Unit {
+	
 	private Map<String, Macro> macros;
 	private List<Token> original;
 	
@@ -20,10 +21,11 @@ public class Unit {
 		this.macros = macros;
 	}
 	
-	/* should override all these three */
+	/* should override all these */
 	public void construct(){}
 	public void PrintForward(){}
 	public void PrintBackward(){}
+	public List<Token> getExpandedTokens(){return this.original;};
 	
 	public void setOriginal(List<Token> tokens) {
 		this.original = tokens;
@@ -32,6 +34,7 @@ public class Unit {
 	public List<Token> getOriginal(){
 		return this.original;
 	}
+	
 	
 	
 	public void addToken(Token tok){

@@ -1,11 +1,6 @@
 package org.anarres.cpp;
 
-import static org.anarres.cpp.Token.CCOMMENT;
-import static org.anarres.cpp.Token.CPPCOMMENT;
-import static org.anarres.cpp.Token.EOF;
-import static org.anarres.cpp.Token.IDENTIFIER;
-import static org.anarres.cpp.Token.NL;
-import static org.anarres.cpp.Token.WHITESPACE;
+import static org.anarres.cpp.Token.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,11 +10,14 @@ import java.util.Map;
 import javax.annotation.CheckForNull;
 
 import org.apache.bcel.generic.PUSH;
+import org.apache.tools.ant.Task;
 
 public class MySegment {
 	private List<Unit> seg;
 	private List<Token> tokens;
+	private List<MySegment> args;
 	private Map<String, Macro> macros;
+	private List<Token> expanded;
 	/* iterator of the token */
 	private int it = 0;
 	
@@ -28,6 +26,8 @@ public class MySegment {
 		this.seg = new ArrayList<Unit>();
 		this.macros = new HashMap<String, Macro>();
 		this.tokens = new ArrayList<Token>();
+		this.args = new ArrayList<MySegment>();
+		this.expanded = new ArrayList<Token>();
 	}
 	
 	public MySegment(List<Token> tokens) {
@@ -46,12 +46,25 @@ public class MySegment {
 		this.tokens = tokens;
 	}
 	
+	public MySegment(Map<String, Macro> macros, List<Token> tokens, List<MySegment> args) {
+		this(macros, tokens);
+		this.args = args;
+	}
+	
+	public void setArgs(List<MySegment> args) {
+		this.args = args;
+	}
+	
 	public void setTokens(List<Token> tokens) {
 		this.tokens = tokens;
 	}
 	
 	public void addToken(Token tok) {
 		this.tokens.add(tok);
+	}
+	
+	public Map<String, Macro> getMacros() {
+		return this.macros;
 	}
 	
 	public void setMacros(Map<String, Macro> mac) {
@@ -111,6 +124,7 @@ public class MySegment {
 					break;
 				}
 				boolean macroFlag = false;
+				boolean argFlag = false;
 				Token tok = this.nextToken();
 				switch (tok.getType()) {
 				case IDENTIFIER:
@@ -130,11 +144,21 @@ public class MySegment {
 					}
 	                this.pushUnit(blcUnit);
 	                break;
-
+				case M_ARG:
+					argFlag = true;
+					int idx = ((Integer) tok.getValue()).intValue();
+					ArgUnits arg = new ArgUnits(this.args.get(idx));
+					if (block.getOriginal().size() != 0) {
+	                	StringUnits sblock = new StringUnits(block);
+	                	sblock.construct();
+						this.pushUnit(sblock);
+					}
+	                this.pushUnit(arg);
+					break;
 				default:
 					break;
 				}
-				if (macroFlag) {
+				if (macroFlag || argFlag) {
 					break;
 				}
 				block.addToken(tok);
@@ -224,7 +248,9 @@ public class MySegment {
                             break;
                         case ')':
                             if (depth == 0) {
+                            	arg.mySplit();
                                 args.add(arg);
+                                ((FunctionLikeUnits) blockUnit).setArgs(args);
                                 blockUnit.addToken(tok);
                                 break ARGS;
                             } else {
@@ -299,6 +325,13 @@ public class MySegment {
     	for (int i = 0; i < this.seg.size(); i++) {
 			seg.get(i).PrintForward();
 		}
+    }
+    
+    public List<Token> getExpandedTokens(){
+    	for (int i = 0; i < this.seg.size(); i++) {
+    		//this.expanded = this.expanded.Concat(this.seg.get(i).getExpandedTokens());
+		}
+    	return this.expanded;
     }
 	
 }

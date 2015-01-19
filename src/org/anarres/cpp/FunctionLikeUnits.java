@@ -19,15 +19,23 @@ public class FunctionLikeUnits extends Unit {
 	
 	public void setArgs(List<MySegment> args){
 		this.args = args;
+		this.expanded.setArgs(args);
 	}
 	
 	@Override
 	public void construct(){
 		System.out.println("Constructing a Func Macro...");
+		/*XXX*/
+		this.expanded.mySplit();
 	}
 	
 	@Override
 	public void PrintForward(){
-		System.out.print("Printing a Func Macro...");
+		//System.out.print("Printing a Func Macro...");
+		this.expanded.PrintForward();
+	}
+	
+	public List<Token> getExpandedTokens() {
+		return this.expanded.getExpandedTokens();
 	}
 }
