@@ -25,6 +25,8 @@ public class ArgUnits extends Unit {
 	public void construct(){
 		/*
 		 * do nothing here because the arg has already constructed before. */
+		this.expanded.setBase(super.base);
+		super.length = this.expanded.getLength();
 		return;
 	}
 	
@@ -34,7 +36,4 @@ public class ArgUnits extends Unit {
 		return;
 	}
 	
-	public List<Token> getExpandedTokens() {
-		return this.expanded.getExpandedTokens();
-	}
 }

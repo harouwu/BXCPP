@@ -1,4 +1,9 @@
-#define f(x+1) x+1;
+#define f(x) x+1;
+
+
+
+
+
 int main(){
 	f(a);
 	f(a+1)

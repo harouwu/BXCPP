@@ -26,7 +26,9 @@ public class FunctionLikeUnits extends Unit {
 	public void construct(){
 		System.out.println("Constructing a Func Macro...");
 		/*XXX*/
+		this.expanded.setBase(super.base);
 		this.expanded.mySplit();
+		super.length = this.expanded.getLength();
 	}
 	
 	@Override
@@ -35,7 +37,4 @@ public class FunctionLikeUnits extends Unit {
 		this.expanded.PrintForward();
 	}
 	
-	public List<Token> getExpandedTokens() {
-		return this.expanded.getExpandedTokens();
-	}
 }

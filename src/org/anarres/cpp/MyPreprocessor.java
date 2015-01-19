@@ -85,6 +85,7 @@ public class MyPreprocessor {
 	        }
 		this.macros = pp.getMacros();
 		this.segment.setMacros(pp.getMacros());
+		this.segment.setBase(0);
 		this.segment.mySplit();
 		
 		System.out.println("Printing Forward");

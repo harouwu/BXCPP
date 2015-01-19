@@ -19,7 +19,9 @@ public class ObjectLikeUnits extends Unit {
 	@Override
 	public void construct(){
 		System.out.println("Constructing an Obj Macro...");
+		this.expanded.setBase(super.base);
 		this.expanded.mySplit();
+		super.length = this.expanded.getLength();
 	}
 	
 	@Override
@@ -27,7 +29,5 @@ public class ObjectLikeUnits extends Unit {
 		this.expanded.PrintForward();
 	}
 	
-	public List<Token> getExpandedTokens() {
-		return this.expanded.getExpandedTokens();
-	}
+	
 }

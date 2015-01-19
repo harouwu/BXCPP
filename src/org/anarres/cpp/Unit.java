@@ -8,6 +8,9 @@ import java.util.Map;
 
 public class Unit {
 	
+	protected int base = 0;
+	protected int length = 0;
+	
 	private Map<String, Macro> macros;
 	private List<Token> original;
 	
@@ -25,7 +28,6 @@ public class Unit {
 	public void construct(){}
 	public void PrintForward(){}
 	public void PrintBackward(){}
-	public List<Token> getExpandedTokens(){return this.original;};
 	
 	public void setOriginal(List<Token> tokens) {
 		this.original = tokens;
@@ -35,6 +37,10 @@ public class Unit {
 		return this.original;
 	}
 	
+	public void setBase(int b) {this.base = b;}
+	public void setLength(int l) {this.length = l;}
+	public int getLength() {return this.length;}
+	public int getBase() {return this.base;}
 	
 	
 	public void addToken(Token tok){

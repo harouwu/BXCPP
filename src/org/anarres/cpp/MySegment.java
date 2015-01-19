@@ -20,6 +20,8 @@ public class MySegment {
 	private List<Token> expanded;
 	/* iterator of the token */
 	private int it = 0;
+	private int length = 0;
+	private int base = 0;
 	
 	public MySegment() {
 		// TODO Auto-generated constructor stub
@@ -49,6 +51,14 @@ public class MySegment {
 	public MySegment(Map<String, Macro> macros, List<Token> tokens, List<MySegment> args) {
 		this(macros, tokens);
 		this.args = args;
+	}
+	
+	public void setBase(int b) {
+		this.base = b;
+	}
+	
+	public int getLength() {
+		return this.length;
 	}
 	
 	public void setArgs(List<MySegment> args) {
@@ -114,12 +124,14 @@ public class MySegment {
 	public void mySplit() {
 		for (;;) {
 			Unit block = new Unit();
+			block.setBase(this.base + this.length);
 			for (;;) {
 				if (it == this.tokens.size()) {
 					if (it != 0) {
 						StringUnits sblock = new StringUnits(block);
 	                	sblock.construct();
 						this.pushUnit(sblock);
+						this.length += sblock.getLength();
 					}
 					break;
 				}
@@ -141,8 +153,10 @@ public class MySegment {
 	                	StringUnits sblock = new StringUnits(block);
 	                	sblock.construct();
 						this.pushUnit(sblock);
+						this.length += sblock.getLength();
 					}
 	                this.pushUnit(blcUnit);
+	                this.length += blcUnit.getLength();
 	                break;
 				case M_ARG:
 					argFlag = true;
@@ -152,8 +166,11 @@ public class MySegment {
 	                	StringUnits sblock = new StringUnits(block);
 	                	sblock.construct();
 						this.pushUnit(sblock);
+						this.length += sblock.getLength();
 					}
+					arg.construct();
 	                this.pushUnit(arg);
+	                this.length += arg.getLength();
 					break;
 				default:
 					break;
@@ -178,6 +195,8 @@ public class MySegment {
         	blockUnit = new FunctionLikeUnits(this.macros, m);
         else
         	blockUnit = new ObjectLikeUnits(this.macros, m);
+        
+        blockUnit.setBase(this.base + this.length);
         
         List<MySegment> args;
 
@@ -312,7 +331,6 @@ public class MySegment {
                 /* nargs == 0 and we (correctly) got () */
                 args = null;
             }
-
         } else {
             /* Macro without args. */
             args = null;
@@ -322,6 +340,7 @@ public class MySegment {
     }
     
     public void PrintForward(){
+    	System.out.println("Length: " + this.length);
     	for (int i = 0; i < this.seg.size(); i++) {
 			seg.get(i).PrintForward();
 		}
@@ -329,7 +348,7 @@ public class MySegment {
     
     public List<Token> getExpandedTokens(){
     	for (int i = 0; i < this.seg.size(); i++) {
-    		//this.expanded = this.expanded.Concat(this.seg.get(i).getExpandedTokens());
+    		;//this.expanded = this.expanded.Concat(this.seg.get(i).getExpandedTokens());
 		}
     	return this.expanded;
     }

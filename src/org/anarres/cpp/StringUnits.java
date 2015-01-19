@@ -17,6 +17,7 @@ public class StringUnits extends Unit {
 	public StringUnits(Unit u) {
 		this();
 		super.setOriginal(u.getOriginal());
+		super.setBase(u.getBase());
 	}
 
 	@Override
@@ -24,6 +25,7 @@ public class StringUnits extends Unit {
 		// TODO Auto-generated method stub
 		System.out.println("Constructing String Unit...");
 		this.expanded = super.getOriginal();
+		super.length = this.expanded.size();
 		return;
 		
 	}
@@ -41,10 +43,6 @@ public class StringUnits extends Unit {
 	public void PrintBackward() {
 		// TODO Auto-generated method stub
 		this.PrintForward();
-	}
-	
-	public List<Token> getExpandedTokens() {
-		return this.expanded.getExpandedTokens();
 	}
 	
 }
