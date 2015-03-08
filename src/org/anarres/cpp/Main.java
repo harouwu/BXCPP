@@ -18,6 +18,7 @@ package org.anarres.cpp;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -32,6 +33,7 @@ import joptsimple.ValueConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.anarres.cpp.Token.*;
 
 /**
  * (Currently a simple test class).
@@ -89,6 +91,8 @@ public class Main {
                 .withRequiredArg().ofType(String.class).describedAs("warning");
         OptionSpec<Void> noWarningOption = parser.acceptsAll(Arrays.asList("no-warnings", "w"),
                 "Disables ALL warnings.");
+        //OptionSpec<File> fixOption = parser.accepts("fixlist", "F")
+        //        .withRequiredArg().ofType(File.class).describedAs("fixfile");
         OptionSpec<File> inputsOption = parser.nonOptions()
                 .ofType(File.class).describedAs("Files to process.");
 
@@ -158,6 +162,12 @@ public class Main {
             for (File input : inputs)
                 pp.addInput(new FileLexerSource(input));
         }
+        
+        Preprocessor fixListPreprocessor = new Preprocessor();
+        //List<File> fixFiles = options.valuesOf(fixOption);
+        File fixFile = new File("change1.txt");
+		fixListPreprocessor.addInput(new FileLexerSource(fixFile));
+        genFixList(fixListPreprocessor);
 
         if (pp.getFeature(Feature.DEBUG)) {
             LOG.info("#" + "include \"...\" search starts here:");
@@ -196,6 +206,50 @@ public class Main {
         //mpp.Print();
 
     }
+    
+    private FixList genFixList(Preprocessor pp){
+    	FixList fl = new FixList();
+    	List<Token> tokList = new ArrayList<Token>();
+    	try {
+			for (;;) {
+				Token tok = pp.token();
+				if (tok == null)
+					break;
+				if (tok.getType() == Token.EOF){
+					break;
+				}
+				switch (tok.getType()) {
+				case WHITESPACE:
+				case NL:
+					break;
+				case IDENTIFIER:
+					if (tok.getText().equalsIgnoreCase("DELETE")) {
+						pp.token();//blank
+						Token lineToken = pp.token();
+						pp.token();
+						Token starToken = pp.token();
+						pp.token();
+						Token endToken = pp.token();
+						//fl.addFix(new DeleteFix()));
+					}
+
+				default:
+					tokList.add(tok);
+					break;
+				}
+				}
+			} catch (Exception e) {
+				StringBuilder buf = new StringBuilder("Preprocessor failed:\n");
+	            Source s = pp.getSource();
+	            while (s != null) {
+	                buf.append(" -> ").append(s).append("\n");
+	                s = s.getParent();
+	            }
+	        }
+    	
+    	return fl;
+    }
+    
 
     private static void version(@Nonnull PrintStream out) {
         out.println("Anarres Java C Preprocessor version " + "Version.getVersion()");

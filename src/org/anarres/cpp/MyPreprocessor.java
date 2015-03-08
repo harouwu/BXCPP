@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
@@ -87,11 +88,80 @@ public class MyPreprocessor {
 		this.segment.setMacros(pp.getMacros());
 		this.segment.setBase(0);
 		this.segment.mySplit();
-		
+		this.segment.calcBaseLength();
 		System.out.println("Printing Forward");
 		this.segment.PrintForward();
+		
+		//FixList fl = genFixList();
+		//fl.printFixes();
+		
+		FixList fl1 = new FixList();
+		/*
+		 * test 3
+		fl1.addFix(new ChangeFix(11, new Token(Token.IDENTIFIER, "z")));
+		fl1.addFix(new ChangeFix(22, new Token(Token.IDENTIFIER, "z")));
+		fl1.addFix(new ChangeFix(30, new Token(Token.IDENTIFIER, "z")));
+		fl1.addFix(new ChangeFix(43, new Token(Token.IDENTIFIER, "z")));
+		*/
+		/*
+		 * test 4
+		for (int i = 29; i <= 71; i++) {
+			fl1.addFix(new DeleteFix(i));
+		}
+		for (int i = 96; i <= 138; i++) {
+			fl1.addFix(new DeleteFix(i));
+		}
+		//fl1.addFix(new DeleteFix(29, 71));
+		//fl1.addFix(new DeleteFix(96, 138));//3 16 70 83
+		fl1.addFix(new ChangeFix(9, new Token(Token.IDENTIFIER, "y")));
+		fl1.addFix(new ChangeFix(22, new Token(Token.IDENTIFIER, "y")));
+		fl1.addFix(new ChangeFix(76, new Token(Token.IDENTIFIER, "y")));
+		fl1.addFix(new ChangeFix(89, new Token(Token.IDENTIFIER, "y")));
+		*/
+		/*
+		fl1.addFix(new ChangeFix(20, new Token(Token.IDENTIFIER, "z")));
+		fl1.addFix(new ChangeFix(22, new Token(Token.IDENTIFIER, "z")));
+		fl1.addFix(new ChangeFix(44, new Token(Token.IDENTIFIER, "y")));*/
+		
+		fl1.addFix(new ChangeFix(14, new Token(Token.IDENTIFIER, "3")));
+		fl1.addFix(new ChangeFix(46, new Token(Token.IDENTIFIER, "3")));
+		for (int i = 16; i <= 18; i++) {
+			fl1.addFix(new DeleteFix(i));
+		}
+		for (int i = 50; i <= 52; i++) {
+			fl1.addFix(new DeleteFix(i));
+		}
+		for (int i = 61; i <= 63; i++) {
+			fl1.addFix(new DeleteFix(i));
+		}
+		
+		this.segment.mapback(fl1);
+		this.segment.PrintBackward();
 	}
-
+	
+	private FixList genFixList(){
+    	FixList fl = new FixList();
+    	int[] b = new int[this.segment.getLength()];
+    	for (int i = 0; i < 3; i++) {
+			Random random = new Random();
+			int a = random.nextInt(this.segment.getLength());
+			//int a = 7;
+			if (b[a] == 32) {
+				continue;
+			}
+			b[a] = 32;
+			Fix f;
+			if (a % 2 == 0) {
+				f = new DeleteFix(a);
+			}
+			else {
+				f = new ChangeFix(a, new Token(Token.IDENTIFIER, "Yiming"));
+			}
+			fl.addFix(f);
+		}
+    	fl.sortFix();
+    	return fl;
+    }
 	
     
 	

@@ -81,6 +81,7 @@ public final class Token {
     public int getType() {
         return type;
     }
+    
 
     /* pp */ void setLocation(int line, int column) {
         this.line = line;
@@ -207,6 +208,8 @@ public final class Token {
     public static final int M_STRING = 298;
     public static final int P_LINE = 299;
     public static final int INVALID = 300;
+    public static final int DELETED = 301;
+    public static final int CHANGED = 302;
 
     /** The position-less space token. */
     /* pp */ static final Token space = new Token(WHITESPACE, -1, -1, " ");

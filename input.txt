@@ -1,12 +1,6 @@
-#define objmac1 objmac2
-#define objmac2 a+1
+#define a()					\
+rcu_lockdep_assert(rcu_read_lock_sched_held() ||		\
+		   lockdep_is_held(&wq_pool_mutex),		\
+		   "sched RCU or wq_pool_mutex should be held")
 
-#define f(x) x+x
-#define g(x) x+1
-
-int main(){
-	int * a = {1,2,3};
-	objmac1;
-	f(g(x));
-	return 0;
-}
+	a()

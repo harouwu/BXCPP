@@ -1,11 +1,3 @@
-#define f(x) x+1;
-
-
-
-
-
-int main(){
-	f(a);
-	f(a+1)
-	return 0;
-}
+#define inc(x) x+1
+#define add hello inc 
+add (x)
