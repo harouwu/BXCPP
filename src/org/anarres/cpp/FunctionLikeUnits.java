@@ -37,6 +37,16 @@ public class FunctionLikeUnits extends Unit {
 	}
 	
 	@Override
+	public int CountMacroCalls() {
+		int mcc = 1;
+		mcc += this.expanded.CountMacroCalls();
+		for (int i = 0; i < this.args.size(); i++) {
+			mcc += this.args.get(i).CountMacroCalls();
+		}
+		return mcc;
+	}
+	
+	@Override
 	public void PrintForward(){
 		//System.out.print("Printing a Func Macro...");
 		this.expanded.PrintForward();

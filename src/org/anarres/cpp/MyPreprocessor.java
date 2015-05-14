@@ -90,7 +90,10 @@ public class MyPreprocessor {
 		this.segment.mySplit();
 		this.segment.calcBaseLength();
 		System.out.println("Printing Forward");
+		this.segment.CountMacroCalls();
+		System.out.println("MCC: " + this.segment.getMCC());
 		this.segment.PrintForward();
+		
 		
 		//FixList fl = genFixList();
 		//fl.printFixes();

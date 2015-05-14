@@ -35,6 +35,9 @@ public class Unit {
 	public void construct(){}
 	public void PrintForward(){}
 	public void PrintBackward(){}
+	public int CountMacroCalls() {
+		return 0;
+	}
 	public Unit mapback(FixList fl){ return this; }
 	public boolean equalsBack(Unit unit){
 		if (this == unit)

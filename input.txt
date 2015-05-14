@@ -1,6 +1,4 @@
-#define a()					\
-rcu_lockdep_assert(rcu_read_lock_sched_held() ||		\
-		   lockdep_is_held(&wq_pool_mutex),		\
-		   "sched RCU or wq_pool_mutex should be held")
+#define g(x) x
+#define f(x) x+x
 
-	a()
+f(g(a))

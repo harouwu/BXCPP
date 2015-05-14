@@ -44,6 +44,13 @@ public class ObjectLikeUnits extends Unit {
 	}
 	
 	@Override
+	public int CountMacroCalls() {
+		int mcc = 1;
+		mcc += this.expanded.CountMacroCalls();
+		return mcc;
+	}
+	
+	@Override
 	public void PrintBackward(){
 		if (!this.changed) {
 			for (int i = 0; i < this.original.size(); i++) {
