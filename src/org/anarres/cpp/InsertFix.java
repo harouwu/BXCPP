@@ -38,7 +38,7 @@ public class InsertFix extends Fix {
 			else if (this.sourceStart <= textSegment.getBase() &&
 					this.sourceEnd >= textSegment.getBase() + textSegment.getLength() -1) {
 				unit = unit.mapback(null);
-				this.insertSegment.pushUnit(unit);
+				this.insertUnit.getExpanded().pushUnit(unit);
 				continue;
 			}
 			else if (this.sourceStart <= textSegment.getBase() ||
@@ -53,7 +53,7 @@ public class InsertFix extends Fix {
 				}
 				sunit.construct();
 				sunit = (StringUnits)sunit.mapback(null);
-				this.insertSegment.pushUnit(sunit);
+				this.insertUnit.getExpanded().pushUnit(sunit);
 				continue;
 			}
 		}

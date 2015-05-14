@@ -154,6 +154,8 @@ public class Main {
         for (File file : options.valuesOf(includeOption))
             // Comply exactly with spec.
             pp.addInput(new StringLexerSource("#" + "include \"" + file + "\"\n"));
+        
+        /* We should deal with inputs automatically here */
 
         List<File> inputs = options.valuesOf(inputsOption);
         if (inputs.isEmpty()) {
