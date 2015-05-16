@@ -48,7 +48,15 @@ public class ObjectLikeUnits extends Unit {
 		int mcc = 1;
 		mcc += this.expanded.CountMacroCalls();
 		return mcc;
-	}
+	}	
+	
+	@Override
+	public int CountMacroCallsBack() {
+		int mcc = 0;
+		if (!this.changed) mcc = 1;
+		mcc += this.expanded.CountMacroCallsBack();
+		return mcc;
+	}	
 	
 	@Override
 	public void PrintBackward(){

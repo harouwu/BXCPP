@@ -105,6 +105,7 @@ public class StringUnits extends Unit {
 		return ifStringEquals;
 	}
 	
+	
 	@Override
 	public int CountMacroCalls() {
 		return 0;

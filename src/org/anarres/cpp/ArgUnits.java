@@ -43,11 +43,11 @@ public class ArgUnits extends Unit {
 	
 	@Override
 	public int CountMacroCalls() {
-		int mcc = 1;
-		mcc += this.expanded.CountMacroCalls();
-		return mcc;
+			int mcc = 1;
+			mcc += this.expanded.CountMacroCalls();
+			return mcc;
 	}
-	
+		
 	@Override
 	public void PrintForward(){
 		this.expanded.PrintForward();

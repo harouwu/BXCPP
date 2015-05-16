@@ -17,6 +17,7 @@
 package org.anarres.cpp;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,10 +61,15 @@ public class Main {
 
     public void run(String[] args) throws Exception {
 
+    	File outputfile = new File("output.txt");
+    	PrintStream out = new PrintStream(new FileOutputStream(outputfile));
+    	System.setOut(out);
+    	
         OptionParser parser = new OptionParser();
         OptionSpec<?> helpOption = parser.accepts("help",
                 "Displays command-line help.")
                 .forHelp();
+                        
         OptionSpec<?> versionOption = parser.acceptsAll(Arrays.asList("version"),
                 "Displays the product version (" + "Version.getVersion" + ") and exits.")
                 .forHelp();
@@ -102,7 +108,7 @@ public class Main {
             parser.printHelpOn(System.out);
             return;
         }
-
+        
         if (options.has(versionOption)) {
             version(System.out);
             return;
@@ -154,8 +160,6 @@ public class Main {
         for (File file : options.valuesOf(includeOption))
             // Comply exactly with spec.
             pp.addInput(new StringLexerSource("#" + "include \"" + file + "\"\n"));
-        
-        /* We should deal with inputs automatically here */
 
         List<File> inputs = options.valuesOf(inputsOption);
         if (inputs.isEmpty()) {

@@ -44,8 +44,33 @@ public class FunctionLikeUnits extends Unit {
 			mcc += this.args.get(i).CountMacroCalls();
 		}
 		return mcc;
-	}
-	
+	}	
+	@Override
+	public int CountMacroCallsBack() {
+		int mcc = 0;
+		if (!this.changed) {
+			mcc = 1;
+			mcc += this.expanded.CountMacroCallsBack();
+			for (int i = 0; i < this.args.size(); i++) {
+				mcc += this.args.get(i).CountMacroCallsBack();
+			}
+		}
+		else if (this.changed && !this.broken) {
+			//SHOULD PRINT THE FUNCTIONAL CALL WITH ARG;
+			mcc=1;
+			
+			Map<Integer, Unit> argsentinal = this.expanded.getArgSentinals();
+			for (int i = 0; i < this.expanded.getArgs().size(); i++) {
+				if (argsentinal.containsKey(i))
+					mcc+=argsentinal.get(i).CountMacroCallsBack();
+				mcc+=this.expanded.getArgs().get(i).CountMacroCallsBack();
+			}
+		}
+		else {
+			mcc += this.expanded.CountMacroCallsBack();
+		}
+		return mcc;
+	}	
 	@Override
 	public void PrintForward(){
 		//System.out.print("Printing a Func Macro...");

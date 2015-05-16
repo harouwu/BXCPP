@@ -922,7 +922,7 @@ public class Preprocessor implements Closeable {
 
         Macro m = new Macro(getSource(), name);
         List<String> args;
-
+        
         tok = source_token();
         if (tok.getType() == '(') {
             tok = source_token_nonwhite();

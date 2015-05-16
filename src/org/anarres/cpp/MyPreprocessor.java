@@ -12,6 +12,7 @@ import static org.anarres.cpp.Token.WHITESPACE;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -84,21 +85,38 @@ public class MyPreprocessor {
 	                s = s.getParent();
 	            }
 	        }
+		
+		for (int i = 0; i < this.segment.getTokens().size(); i++) {
+			Token tok = this.segment.getTokens().get(i);
+			switch (tok.getType()) {
+			case ',':
+				i++;
+				Token nextToken = this.segment.getTokens().get(i);
+				if (nextToken.getType() == NL) {
+					System.out.println("CommaNewLine, Line: " + nextToken.getLine());
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		
 		this.macros = pp.getMacros();
 		this.segment.setMacros(pp.getMacros());
 		this.segment.setBase(0);
 		this.segment.mySplit();
 		this.segment.calcBaseLength();
 		System.out.println("Printing Forward");
-		this.segment.CountMacroCalls();
-		System.out.println("MCC: " + this.segment.getMCC());
 		this.segment.PrintForward();
-		
+		this.segment.CountMacroCalls();
+		System.out.println("Macros Invocations: "+this.segment.getMCC());
+		FixList fl1 = new FixList();
+		//this.segment.mapback(fl1);
+		//this.segment.PrintForward();
 		
 		//FixList fl = genFixList();
 		//fl.printFixes();
 		
-		FixList fl1 = new FixList();
 		/*
 		 * test 3
 		fl1.addFix(new ChangeFix(11, new Token(Token.IDENTIFIER, "z")));
@@ -126,6 +144,7 @@ public class MyPreprocessor {
 		fl1.addFix(new ChangeFix(22, new Token(Token.IDENTIFIER, "z")));
 		fl1.addFix(new ChangeFix(44, new Token(Token.IDENTIFIER, "y")));*/
 		
+		/*
 		fl1.addFix(new ChangeFix(14, new Token(Token.IDENTIFIER, "3")));
 		fl1.addFix(new ChangeFix(46, new Token(Token.IDENTIFIER, "3")));
 		for (int i = 16; i <= 18; i++) {
@@ -137,13 +156,70 @@ public class MyPreprocessor {
 		for (int i = 61; i <= 63; i++) {
 			fl1.addFix(new DeleteFix(i));
 		}
+		*/
+		fl1=this.genFixList();
+		/*
+		fl1.addFix(new ChangeFix(5,new Token(Token.IDENTIFIER,"y")));
+		fl1.addFix(new ChangeFix(9,new Token(Token.IDENTIFIER,"y")));
+		*/
 		
 		this.segment.mapback(fl1);
+		this.segment.CountMacroCallsBack();
+		System.out.println("Macros Invocations: "+this.segment.getMCCBack());
 		this.segment.PrintBackward();
 	}
 	
 	private FixList genFixList(){
     	FixList fl = new FixList();
+    	    	
+    	Random random = new Random(456);
+    	
+    	Iterator<Token> iter=this.segment.tokenListForward().iterator();
+    	
+    	int changes = 0;
+    	
+    	for (int i=0;iter.hasNext();++i) {
+    		Token now = iter.next();
+        		int cur = random.nextInt(10000);
+    			//System.out.println(now.getText());
+    			//System.out.println(now.getType());
+    			if ((now.getType()==IDENTIFIER || now.getType()==NUMBER) && cur<=1000) {
+    				int a = random.nextInt(456);
+    				Fix f;
+    				//System.out.println(now.getText());
+    				changes+=1;
+    				if (a==0) {
+    					f = new DeleteFix(i);
+    				} else {
+    					int len1 = now.getText().length();
+    					char[] s = now.getText().toCharArray();
+    					for (int j = 0 ; j < len1 ;++j) {
+    						char ch = s[j];
+    						if (ch>='a' && ch<='z') {
+    							int k=97+random.nextInt(26);
+    							ch=(char)k;
+    							s[j]=ch;
+    						}
+    						if (ch>='0' && ch<='9') {
+    							int k=48+random.nextInt(10);
+    							ch=(char)k;
+    							s[j]=ch;
+    						}
+    						if (ch>='A' && ch<='Z') {
+    							int k=65+random.nextInt(26);
+    							ch=(char)k;
+    							s[j]=ch;
+    						}
+    					}
+    					f = new ChangeFix(i,new Token(Token.IDENTIFIER,s.toString()));
+    				}
+    				fl.addFix(f);
+    			}
+    		}
+    	
+    	System.out.println("Changes: "+changes);
+    	
+    	/*
     	int[] b = new int[this.segment.getLength()];
     	for (int i = 0; i < 3; i++) {
 			Random random = new Random();
@@ -161,7 +237,7 @@ public class MyPreprocessor {
 				f = new ChangeFix(a, new Token(Token.IDENTIFIER, "Yiming"));
 			}
 			fl.addFix(f);
-		}
+		} */
     	fl.sortFix();
     	return fl;
     }

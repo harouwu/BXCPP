@@ -1,4 +1,8 @@
-#define g(x) x
-#define f(x) x+x
-
-f(g(a))
+#define LOAD_INT(x) ((x) >> FSHIFT)
+#define LOAD_FRAC(x) LOAD_INT(((x) & (FIXED_1-1)) * 100)
+	kdb_printf("load avg   %ld.%02ld %ld.%02ld %ld.%02ld\n",
+		LOAD_INT(val.loads[0]), LOAD_FRAC(val.loads[0]),
+		LOAD_INT(val.loads[1]), LOAD_FRAC(val.loads[1]),
+		LOAD_INT(val.loads[2]), LOAD_FRAC(val.loads[2]));
+//#undef LOAD_INT
+//#undef LOAD_FRAC

@@ -645,19 +645,35 @@ public class MySegment {
 			this.changedBlock.get(i).PrintBackward();
 		}
     }
-    
+
+
+   
     private int macroCallsCount;
-    
     public int getMCC(){return macroCallsCount;}
-    
+
     public int CountMacroCalls(){
     	macroCallsCount = 0;
     	for (int i = 0; i < this.seg.size(); i++) {
     		if (this.seg.get(i) instanceof ArgUnits) {
-				continue;
-			}
-			macroCallsCount += seg.get(i).CountMacroCalls();
-		}
+    			continue;
+    		}
+    		macroCallsCount += seg.get(i).CountMacroCalls();
+    	}
     	return macroCallsCount;
+    }
+    
+    private int macroCallsCountBack;
+    
+    public int getMCCBack(){return macroCallsCountBack;}
+
+    public int CountMacroCallsBack(){
+    	macroCallsCountBack = 0;
+    	for (int i = 0; i < this.changedBlock.size(); i++) {
+    		if (this.changedBlock.get(i) instanceof ArgUnits) {
+    			continue;
+    		}
+    		macroCallsCountBack += changedBlock.get(i).CountMacroCallsBack();
+    	}
+    	return macroCallsCountBack;
     }
 }
