@@ -72,7 +72,7 @@ It modeles `GCC` forward preprocessing. It accepts general changes given by most
 
 BXCPP has been evaluated on 8000 lines of code obtained from LInux Kernel, and compared with two control techniques. The experimental data can be found at `source.cpp`.
 
-Add `source.cpp` to the argument and run the project in eclipse.
+To perform the evaluation, please add `source.cpp` to the argument and run the project in eclipse.
 
 -------------------------------------------------
 
